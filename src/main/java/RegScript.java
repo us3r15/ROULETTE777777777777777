@@ -42,10 +42,11 @@ public class RegScript
     public static void RegGame()
     {
         JFrame gameMenu = new JFrame("Fun Game :)");
-        gameMenu.setIconImage(Image(RegScript.class.getResource("pixil-frame-0.png")));
+        gameMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(RegScript.class.getResource("pixil-frame-0.png")));
         JLabel stats = new JLabel("<html>Insert name:</html>");
         JLabel controls = new JLabel("");
-        JLabel wheel = new JLabel("<html><span style='color:red'>#</span> [ 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 34 ]&emsp;&emsp;&ensp;[&nbsp;<span style='color:green'>G</span>&nbsp;]<br><span style='color:black'>#</span> [ 1 | 3 | 5 | 7 | 9 | 11 | 13 | 15 | 17 | 19 | 21 | 23 | 25 | 27 | 29 | 31 | 33 | 35 ]&emsp;[&nbsp;0&nbsp;]</html>");
+        JLabel wheel = new JLabel("<html><h3><span style='color:red'>#</span> [2|4|6|8|10|12|14|16|18|20|22|24|26|28|30|32|34]&emsp;&emsp;&ensp;[&nbsp;<span style='color:green'>G</span>&nbsp;]<br><span style='color:black'>#</span> [1|3|5|7|9|11|13|15|17|19|21|23|25|27|29|31|33|35]&emsp;[&nbsp;0&nbsp;]</html>");
+        System.out.println(wheel.getText().substring(0, 6));
         JLabel betStats = new JLabel("Press [R, G, or B] to make a bet");
         wheel.setHorizontalAlignment(SwingConstants.RIGHT);
         wheel.setVerticalAlignment(SwingConstants.TOP);
@@ -95,23 +96,23 @@ public class RegScript
                 }
                 else
                 {
-                    gameMenu.add(betStats);
-                    System.out.println(betStats.getSize());
-
                     if (pressed.getKeyCode() == KeyEvent.VK_R)
                     {
+                        gameMenu.add(betStats);
                         betColor(Color.RED);
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_G)
                     {
+                        gameMenu.add(betStats);
                         betColor(Color.GREEN);
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_B)
                     {
+                        gameMenu.add(betStats);
                         betColor(Color.BLACK);
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
                     }
@@ -139,12 +140,26 @@ public class RegScript
                         if ((winningNumber % 2 == 1 && betColorNum == 2) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))
                             chips += betAmount * 2;
 
+                        if (wheel.getText().indexOf("x") != -1)
+                        {
+                            wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf("x")) + wheel.getText().substring(wheel.getText().indexOf("x") + 1));
+                        }
+
                         if (winningNumber % 2 == 1)
+                        {
                             winningColor = "black";
+                            //TODO
+                        }
                         else if (winningNumber == 0)
+                        {
                             winningColor = "green";
+                            //TODO
+                        }
                         else
-                            winningColor = "red";
+                        {
+                            winningColor = "red"; //Do that (line 159) for Black and green (GREEN FIRST PLEASE, HOLY SHIT)
+                            wheel.setText(wheel.getText().substring(0, 45 + winningNumber) + "x" + wheel.getText().substring(45 + winningNumber));
+                        }
 
                         game += 1;
                         stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
