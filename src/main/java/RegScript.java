@@ -9,7 +9,7 @@ public class RegScript
     public static int game = 1;
     public static long chips = 4500;
     public static int betColorNum = 0;
-    public static int winningNumber = 36;
+    public static Integer winningNumber;
     public static String winningColor = "";
     public static long betAmount = 500;
     public static String betOn = null;
@@ -42,18 +42,15 @@ public class RegScript
     public static void RegGame()
     {
         JFrame gameMenu = new JFrame("Fun Game :)");
+        gameMenu.setIconImage(Image(RegScript.class.getResource("pixil-frame-0.png")));
         JLabel stats = new JLabel("<html>Insert name:</html>");
         JLabel controls = new JLabel("");
-        JLabel wheel = new JLabel(new ImageIcon(RegScript.class.getResource("pix.png")));
-        JLabel innerWheel = new JLabel(new ImageIcon(RegScript.class.getResource("outer-wheel.png")));
+        JLabel wheel = new JLabel("<html><span style='color:red'>#</span> [ 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 34 ]&emsp;&emsp;&ensp;[&nbsp;<span style='color:green'>G</span>&nbsp;]<br><span style='color:black'>#</span> [ 1 | 3 | 5 | 7 | 9 | 11 | 13 | 15 | 17 | 19 | 21 | 23 | 25 | 27 | 29 | 31 | 33 | 35 ]&emsp;[&nbsp;0&nbsp;]</html>");
         JLabel betStats = new JLabel("Press [R, G, or B] to make a bet");
         wheel.setHorizontalAlignment(SwingConstants.RIGHT);
         wheel.setVerticalAlignment(SwingConstants.TOP);
+        wheel.setForeground(Color.WHITE);
         wheel.setVisible(true);
-        innerWheel.setHorizontalAlignment(wheel.getHorizontalAlignment());
-        innerWheel.setVerticalAlignment(wheel.getVerticalAlignment());
-        innerWheel.setVisible(true);
-        innerWheel.setOpaque(false);
         betStats.setVerticalAlignment(SwingConstants.BOTTOM);
         betStats.setHorizontalAlignment(SwingConstants.RIGHT);
         betStats.setForeground(Color.WHITE);
@@ -87,10 +84,8 @@ public class RegScript
                     else if (pressed.getKeyCode() == KeyEvent.VK_ENTER && name.length() > 0)
                     {
                         startup = false;
-                        stats.setText("<html><header>Name: " + name + "</header><br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "</html>");
                         controls.setText("<html>[F] Place Bet&emsp;[R] Bet Red<br>[C] Bet -100&emsp;&nbsp;[G] Bet Green<br>[V] Bet +100&emsp;[B] Bet Black</html>");
-                        wheel.setIcon(new ImageIcon(RegScript.class.getResource("inner-wheel.png")));
-                        gameMenu.add(innerWheel);
                     }
                     else if (pressed.getKeyCode() == KeyEvent.VK_BACK_SPACE)
                     {
@@ -126,7 +121,7 @@ public class RegScript
                         betAmount -= 100;
                         chips += 100;
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
-                        stats.setText("<html><header>Name: " + name + "</header><br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_V && chips > 0)
@@ -134,14 +129,14 @@ public class RegScript
                         betAmount += 100;
                         chips -= 100;
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
-                        stats.setText("<html><header>Name: " + name + "</header><br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_F && betOn != null)
                     {
                         winningNumber = (int) (Math.random() * 36);
 
-                        if ((winningNumber % 2 == 1 && betColorNum == 2 && winningNumber != 0) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))
+                        if ((winningNumber % 2 == 1 && betColorNum == 2) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))
                             chips += betAmount * 2;
 
                         if (winningNumber % 2 == 1)
@@ -152,11 +147,11 @@ public class RegScript
                             winningColor = "red";
 
                         game += 1;
-                        stats.setText("<html><header>Name: " + name + "</header><br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
 
                         if (chips == 0)
                         {
-                            System.out.print("\n\nYou fucken SUCK");
+                            System.out.print("\n\nYou flippity-dippin' SUCK");
                             System.exit(130);
                         }
 

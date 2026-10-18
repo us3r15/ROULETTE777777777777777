@@ -91,7 +91,6 @@ public class Main
                             else if (typed.equals("no"))
                             {
                                 menu.setVisible(false);
-                                //run RegFile
                                 RegScript.RegGame();
                                 started = true;
                             }
