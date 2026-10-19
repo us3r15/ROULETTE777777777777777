@@ -4,16 +4,16 @@ import java.awt.event.*;
 
 public class RegScript
 {
-    public static boolean startup = true;
-    public static String name = "";
-    public static int game = 1;
-    public static long chips = 4500;
-    public static int betColorNum = 0;
-    public static int winningNumber;
-    public static String winningColor = "";
-    public static long betAmount = 500;
-    public static String betOn = null;
-    public static int doubleDigit = 0;
+    private static boolean startup = true;
+    private static String name = "";
+    private static int game = 1;
+    private static long chips = 4500;
+    private static int betColorNum = 0;
+    private static int winningNumber;
+    private static String winningColor = "";
+    private static long betAmount = 500;
+    private static String betOn = null;
+    private static int doubleDigit = 0;
 
     public static String betColor(Color inside)
     {
@@ -44,7 +44,6 @@ public class RegScript
         JLabel stats = new JLabel("<html>Insert name:</html>");
         JLabel controls = new JLabel("");
         JLabel wheel = new JLabel("");
-        System.out.println(wheel.getText().substring(0, 6));
         JLabel betStats = new JLabel("Press [R, G, or B] to make a bet");
         wheel.setHorizontalAlignment(SwingConstants.RIGHT);
         wheel.setVerticalAlignment(SwingConstants.TOP);
@@ -141,7 +140,7 @@ public class RegScript
                         else
                             doubleDigit = 0;
 
-                        if (wheel.getText().indexOf("X") != -1)
+                        if (wheel.getText().contains("X"))
                             wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf("X")) + wheel.getText().substring(wheel.getText().indexOf("X") + 1));
 
                         if ((winningNumber % 2 == 1 && betColorNum == 2) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))

