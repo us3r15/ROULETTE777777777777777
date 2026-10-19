@@ -9,13 +9,11 @@ public class RegScript
     public static int game = 1;
     public static long chips = 4500;
     public static int betColorNum = 0;
-    public static Integer winningNumber;
+    public static int winningNumber;
     public static String winningColor = "";
     public static long betAmount = 500;
     public static String betOn = null;
-    private double degrees = 0;
-    private ImageIcon myIcon;
-    private static final double SPEED = 2.0;
+    public static int doubleDigit = 0;
 
     public static String betColor(Color inside)
     {
@@ -45,7 +43,7 @@ public class RegScript
         gameMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(RegScript.class.getResource("pixil-frame-0.png")));
         JLabel stats = new JLabel("<html>Insert name:</html>");
         JLabel controls = new JLabel("");
-        JLabel wheel = new JLabel("<html><h3><span style='color:red'>#</span> [2|4|6|8|10|12|14|16|18|20|22|24|26|28|30|32|34]&emsp;&emsp;&ensp;[&nbsp;<span style='color:green'>G</span>&nbsp;]<br><span style='color:black'>#</span> [1|3|5|7|9|11|13|15|17|19|21|23|25|27|29|31|33|35]&emsp;[&nbsp;0&nbsp;]</html>");
+        JLabel wheel = new JLabel("");
         System.out.println(wheel.getText().substring(0, 6));
         JLabel betStats = new JLabel("Press [R, G, or B] to make a bet");
         wheel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -86,6 +84,7 @@ public class RegScript
                     {
                         startup = false;
                         stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "</html>");
+                        wheel.setText("<html><h3><span style='color:red'>#</span> |2|4|6|8|10|12|14|16|18|20|22|24|26|28|30|32|34|&emsp;&emsp;&ensp;[&nbsp;<span style='color:green'>G</span>&nbsp;]<br><span style='color:black'>#</span> |1|3|5|7|9|11|13|15|17|19|21|23|25|27|29|31|33|35|&emsp;|&nbsp;0&nbsp;|</h3></html>");
                         controls.setText("<html>[F] Place Bet&emsp;[R] Bet Red<br>[C] Bet -100&emsp;&nbsp;[G] Bet Green<br>[V] Bet +100&emsp;[B] Bet Black</html>");
                     }
                     else if (pressed.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -122,7 +121,7 @@ public class RegScript
                         betAmount -= 100;
                         chips += 100;
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
-                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "<br>Last number: " + winningNumber + "</html>");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_V && chips > 0)
@@ -130,39 +129,42 @@ public class RegScript
                         betAmount += 100;
                         chips -= 100;
                         betStats.setText("Bet " + betAmount + " on " + betOn + " ");
-                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "<br>Last number: " + winningNumber + "</html>");
                     }
 
                     if (pressed.getKeyCode() == KeyEvent.VK_F && betOn != null)
                     {
                         winningNumber = (int) (Math.random() * 36);
 
+                        if (winningNumber > 9)
+                            doubleDigit = 1;
+                        else
+                            doubleDigit = 0;
+
+                        if (wheel.getText().indexOf("X") != -1)
+                            wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf("X")) + wheel.getText().substring(wheel.getText().indexOf("X") + 1));
+
                         if ((winningNumber % 2 == 1 && betColorNum == 2) || (winningNumber % 2 == 0 && betColorNum == 1 && winningNumber != 0) || (winningNumber == 0 && betColorNum == 3))
                             chips += betAmount * 2;
 
-                        if (wheel.getText().indexOf("x") != -1)
-                        {
-                            wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf("x")) + wheel.getText().substring(wheel.getText().indexOf("x") + 1));
-                        }
+                        wheel.setText(wheel.getText().substring(0, wheel.getText().indexOf(winningNumber + "|") + 1 + doubleDigit) + "X" + wheel.getText().substring(wheel.getText().indexOf(winningNumber + "|") + 1 + doubleDigit));
+                        System.out.println(winningNumber);
 
                         if (winningNumber % 2 == 1)
                         {
                             winningColor = "black";
-                            //TODO
                         }
                         else if (winningNumber == 0)
                         {
                             winningColor = "green";
-                            //TODO
                         }
                         else
                         {
-                            winningColor = "red"; //Do that (line 159) for Black and green (GREEN FIRST PLEASE, HOLY SHIT)
-                            wheel.setText(wheel.getText().substring(0, 45 + winningNumber) + "x" + wheel.getText().substring(45 + winningNumber));
+                            winningColor = "red";
                         }
 
                         game += 1;
-                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "</html>");
+                        stats.setText("<html>Name: " + name + "<br>Round " + game + "<br>Chips: " + chips + "<br>Gain: " + (chips + betAmount - 5000) + "<br>Last color: " + winningColor + "<br>Last number: " + winningNumber + "</html>");
 
                         if (chips == 0)
                         {

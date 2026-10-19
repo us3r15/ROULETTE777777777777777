@@ -83,7 +83,7 @@ public class Main
                         if (typed.equals("yes"))
                         {
                             menu.setVisible(false);
-                            //run SpicyFile
+                            SpicyScript.SpicyGame();
                             started = true;
                         }
                         else if (typed.equals("no"))
