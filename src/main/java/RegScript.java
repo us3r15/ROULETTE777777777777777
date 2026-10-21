@@ -14,6 +14,7 @@ public class RegScript
     private static long betAmount = 500;
     private static String betOn = null;
     private static int doubleDigit = 0;
+    private static int moves = 0;
 
     public static String betColor(Color inside)
     {
@@ -133,6 +134,8 @@ public class RegScript
 
                     if (pressed.getKeyCode() == KeyEvent.VK_F && betOn != null)
                     {
+                        moves++;
+
                         winningNumber = (int) (Math.random() * 36);
 
                         if (winningNumber > 9)
@@ -167,7 +170,10 @@ public class RegScript
 
                         if (chips == 0)
                         {
-                            System.out.print("\n\nYou flippity-dippin' SUCK");
+                            if (moves < 15)
+                                System.out.print("\n\nYou fucking SUCK");
+                            else
+                                System.out.print("\n\nOh you poor thing");
                             System.exit(130);
                         }
 
